@@ -1,18 +1,54 @@
 project(final)
 cmake_minimum_required(VERSION 2.8)
 
-#add_definitions("-lev")
-set (CMAKE_CXX_FLAGS "-lev -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -lev")
 
-set(SOURCE main.cpp funct.cpp)
-set(SOURCE_EXE main.cpp)		# Установка переменной со списком исходников для исполняемого файла
-set(SOURCE_LIB funct.cpp)			# Тоже самое, но для библиотеки
+include_directories(/usr/include)
+link_directories (/usr/include)
 
-add_library(funct STATIC ${SOURCE_LIB})	# Создание статической библиотеки с именем foo
+#set (EV_SRC /usr/include/ev.h)
+#add_library(libev ${EV_SRC})
 
-add_executable(final ${SOURCE_EXE})
+file(GLOB SOURCES "*.cpp")
 
-target_link_libraries(final funct)
+set(SOURCE_EXE main.cpp)
+
+add_executable(final  ${SOURCES})
+
+
+
+
+
+#project(final)
+#cmake_minimum_required(VERSION 2.8)
+
+#include_directories(include)
+
+#file(GLOB SOURCES "src/*.cpp")
+
+#include_directories(/usr/include)
+
+#add_executable(${PROJECT_NAME} ${SOURCES})
+
+#target_link_libraries(libtest ${PROJECT_LINK_LIBS} )
+
+
+
+
+#set (CMAKE_CXX_FLAGS "-lev")
+#set (CMAKE_LINK_LIBRARY_FLAG "-lev")
+
+#include_directories(/usr/include)
+#link_directories(/usr/include/)
+
+#set(SOURCE main.cpp funct.cpp)
+#set(SOURCE_EXE main.cpp)
+#set(SOURCE_LIB funct.cpp)
+
+#add_library(funct STATIC ${SOURCE_LIB})
+#add_executable(final ${SOURCE_EXE})
+
+#target_link_libraries(final funct)
 
 
 #set (CMAKE_CXX_FLAGS "-lev -pthread")

@@ -31,7 +31,7 @@ string getAnser(char *buf){
     string res;
     string msg(buf);
 
-
+                        //std::stringstream response;
     string body404 = "<html><body><h1>404 NOT FOUND</h1></body><html>\n";
     ostringstream sslen;
     sslen << body404.length();
