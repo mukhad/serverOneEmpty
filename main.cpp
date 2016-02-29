@@ -1,5 +1,8 @@
 #include "funct.h"
 
+//sudo apt-get install libev-dev
+//https://github.com/mukhad/serverOneEmpty.git
+
 using namespace std;
 
 int main(int argc, char *argv[])

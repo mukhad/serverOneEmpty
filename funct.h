@@ -20,6 +20,7 @@ int startEvLoop(int sport,char *dir);
 
 class Funct
 {
+
 public:
     Funct();
 };
