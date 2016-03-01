@@ -12,6 +12,8 @@ char buffer[2048];
 ssize_t buf_size;
 char dirname[64];
 
+FILE *flog_req;
+
 
 /*
 
@@ -30,7 +32,12 @@ string getAnser(char *buf){
 
     /*404*/
     if (!start_demon) cout << "patch1:\n" << buf <<endl;
-    //if (m_flog != NULL)  fprintf(m_flog,"%s\n========\n",buf);
+
+    flog_req = fopen ("/home/box/server_request_final.log" , "a");
+    if (flog_req != NULL){
+        fprintf(flog_req,"%s\n========\n",buf);
+        fclose(flog_req);
+    }
 
     string res;
     string msg(buf);
@@ -141,7 +148,7 @@ int startEvLoop(int sport,char *dir){
     bzero(&addr, sizeof(addr));
     addr.sin_family= AF_INET;
     addr.sin_port = htons(sport);
-    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK); //(INADDR_ANY);
 
     int r = bind(MasterSocket,(struct sockaddr*)&addr,sizeof(addr));
     if (!start_demon) cout << "bind(): " << r << endl;
