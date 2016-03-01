@@ -10,6 +10,8 @@ using namespace std;
 int fd;
 char buffer[2048];
 ssize_t buf_size;
+char dirname[64];
+
 
 /*
 
@@ -28,6 +30,8 @@ string getAnser(char *buf){
 
     /*404*/
     if (!start_demon) cout << "patch1:\n" << buf <<endl;
+    //if (m_flog != NULL)  fprintf(m_flog,"%s\n========\n",buf);
+
     string res;
     string msg(buf);
 
@@ -48,7 +52,7 @@ string getAnser(char *buf){
     {
         /*определяем метод*/
         size_t posf=msg.find(' ',pos+1);/*определяем запрашиваемый файл*/
-        std::string path=msg.substr(pos+1+1,posf-pos-1-1);
+        string path=msg.substr(pos+1+1,posf-pos-1-1);
         pos=path.find('?',0);
 
         if(pos!=-1)
@@ -56,7 +60,10 @@ string getAnser(char *buf){
 
         /*проверяем наличие файла*/
         if(path.length() && path[path.length()-1]!='/'){
-            FILE * file=fopen(path.c_str(),"r");
+            string fullpath = string(dirname) + "/" + path;
+            if (!start_demon) cout << "filename: " << fullpath << endl;
+
+            FILE * file=fopen(fullpath.c_str(),"r");
             if(file!=NULL){
                int n,len=0;
                string res_file;
@@ -100,7 +107,7 @@ void read_callback(struct ev_loop *loop, struct ev_io *watcher,int revents){
         //
         ev_unloop(loop,EVUNLOOP_ALL);
         free(watcher);
-        cout << "quit" << endl;
+        if (!start_demon) cout << "quit" << endl;
         return;
     }else{
         //send(watcher->fd,buffer,r,MSG_NOSIGNAL);
@@ -128,6 +135,8 @@ int startEvLoop(int sport,char *dir){
     int MasterSocket = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
     if (!start_demon) cout << "mastersocket: " << MasterSocket << ":" << sport << endl;
 
+    strcpy(dirname,dir);
+
     struct sockaddr_in addr;
     bzero(&addr, sizeof(addr));
     addr.sin_family= AF_INET;
@@ -135,10 +144,10 @@ int startEvLoop(int sport,char *dir){
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     int r = bind(MasterSocket,(struct sockaddr*)&addr,sizeof(addr));
-    cout << "bind(): " << r << endl;
+    if (!start_demon) cout << "bind(): " << r << endl;
 
     r = listen(MasterSocket,SOMAXCONN);
-    cout << "listen(): " << r << endl;
+    if (!start_demon) cout << "listen(): " << r << endl;
 
     struct ev_loop *loop = ev_default_loop(0);
 

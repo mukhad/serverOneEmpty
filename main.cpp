@@ -7,6 +7,8 @@
 //sudo apt-get install libev-dev
 //echo https://github.com/mukhad/serverOneEmpty.git > final.txt
 
+//  ./final -h 127.0.0.1 -p 12345 -d /tst
+
 using namespace std;
 
 static void skeleton_daemon()
@@ -72,7 +74,19 @@ int main(int argc, char *argv[])
     else
         iport = atoi(port);
 
-    skeleton_daemon();
+    FILE *flog;
+    flog = fopen ("/home/box/server_final.log" , "a");
+    if (flog == NULL){ printf ("Error opening file"); return 0;}
+    fprintf(flog,"server:  %s:%s/%s\n",ip,port,directory);
+    fclose (flog);
+
+    if(start_demon){
+         skeleton_daemon();
+    }
+    else{
+        cout << "server: " << ip << ":"<< iport << "/" << directory << endl;
+    }
+
     startEvLoop(iport,directory);
 
 

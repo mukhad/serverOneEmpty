@@ -14,6 +14,7 @@
 #define start_demon  true
 #define MAX_ARG 32
 
+
 int getOpt(int argc, char *argv[],char *ip, char *port, char *directory, bool &mode );
 int fprintfTimeToLogFile(FILE *f, char* cmd);
 
