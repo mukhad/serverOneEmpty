@@ -1,4 +1,8 @@
+#include <signal.h>
+#include <sys/stat.h>
+
 #include "funct.h"
+
 
 //sudo apt-get install libev-dev
 //https://github.com/mukhad/serverOneEmpty.git
@@ -18,6 +22,9 @@ int main(int argc, char *argv[])
         iport = atoi(port);
 
     int forkpid = 0;
+
+    signal(SIGCHLD, SIG_IGN);
+    signal(SIGHUP, SIG_IGN);
 
     if(start_demon) forkpid=fork();
     if(!forkpid)
@@ -40,7 +47,8 @@ int main(int argc, char *argv[])
         // создаём новый сеанс, чтобы не зависеть от родителя и переходим в корень диска
         if(start_demon){
             setsid();
-            chdir("~");
+            chdir("/");
+            umask(0);
             close(STDIN_FILENO);    close(STDOUT_FILENO);    close(STDERR_FILENO);
         }
 
