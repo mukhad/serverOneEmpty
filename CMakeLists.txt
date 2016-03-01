@@ -1,19 +1,34 @@
 project(final)
 cmake_minimum_required(VERSION 2.8)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -lev")
+set(CMAKE_CXX_FLAGS -lev)
 
-include_directories(/usr/include)
-link_directories (/usr/include)
-
-#set (EV_SRC /usr/include/ev.h)
-#add_library(libev ${EV_SRC})
+link_directories(/usr/lib)
+include_directories(/usr/lib)
 
 file(GLOB SOURCES "*.cpp")
 
-set(SOURCE_EXE main.cpp)
-
 add_executable(final  ${SOURCES})
+
+target_link_libraries(final ev)
+
+
+#project(final)
+#cmake_minimum_required(VERSION 2.8)
+
+#set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -lev")
+
+#include_directories(/usr/include)
+#link_directories (/usr/include)
+
+##set (EV_SRC /usr/include/ev.h)
+##add_library(libev ${EV_SRC})
+
+#file(GLOB SOURCES "*.cpp")
+
+#set(SOURCE_EXE main.cpp)
+
+#add_executable(final  ${SOURCES})
 
 
 
